@@ -1,3 +1,5 @@
+// updated 2/14/2016
+
 #include "error.h"
 
 #include <iostream>
@@ -65,7 +67,12 @@ extern int line_count; // the line number of current token
            << "' to a variable of type '" << s1 << "'."
            << endl;
       break;
-
+    case ANIMATION_BLOCK_ASSIGNMENT_PARAMETER_TYPE_ERROR:
+      error_header();
+      cerr << "Cannot assign an animation block with parameter of type '" << s2
+           << "' to an animation block with parameter of type '" << s1 << "'."
+           << endl;
+      break;
     // some attributes (such as h & w in a circle) cannot be changed
     case CANNOT_CHANGE_DERIVED_ATTRIBUTE:
       error_header();
@@ -133,8 +140,8 @@ extern int line_count; // the line number of current token
       break;
     case INVALID_TYPE_FOR_INITIAL_VALUE:
       error_header();
-      cerr << "Incorrect type (" << s2 << ") for initial value of variable '"
-           << s1 << "' of type (" << s3 << ")."
+      cerr << "Incorrect type (" <<  s1 << ") for initial value of variable '"
+           << s2 << "' of type (" << s3 << ")."
            << endl;
       break;
     case INVALID_TYPE_FOR_FOR_STMT_EXPRESSION:
@@ -159,7 +166,7 @@ extern int line_count; // the line number of current token
     case INVALID_TYPE_FOR_RESERVED_VARIABLE:
       error_header();
       cerr << "Incorrect type for reserved variable '" << s1
-           << "'  It was declared with type '" << s2
+           << "'. It was declared with type '" << s2
            << "'. It must be of type '" << s3 << "'."
            << endl;
       break;
@@ -190,8 +197,8 @@ extern int line_count; // the line number of current token
     // game objects are the only valid operands for near and touches
     case OPERAND_MUST_BE_A_GAME_OBJECT:
       error_header();
-      cerr << "Operand '" << s1 << "' must be of type Game_object or "
-           << "inherit from Game_object."
+      cerr << "Operand '" << s1 << "' must be a Game_object "
+           << "(circle, rectangle, triangle, etc.)"
            << endl;
       break;
     // only called in gpl.cpp when parser finds an error
@@ -242,13 +249,18 @@ extern int line_count; // the line number of current token
       break;
     case UNKNOWN_CONSTRUCTOR_PARAMETER:
       error_header();
-      cerr << "Class '" << s1 << "' does not have a parameter called '"
+      cerr << "Game object '" << s1 << "' does not have a parameter called '"
            << s2 << "'."
            << endl;
       break;
     case VARIABLE_NOT_AN_ARRAY:
       error_header();
       cerr << "Variable '" << s1 << "' is not an array."
+           << endl;
+      break;
+    case VARIABLE_IS_AN_ARRAY:
+      error_header();
+      cerr << "Variable '" << s1 << "' is an array."
            << endl;
       break;
     case DIVIDE_BY_ZERO_AT_PARSE_TIME:

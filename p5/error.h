@@ -1,3 +1,5 @@
+// updated 2/14/2016
+
 /*
   class Error provides a means to unify error messages
 
@@ -49,6 +51,7 @@ class Error
              ARRAY_INDEX_MUST_BE_AN_INTEGER,
              ARRAY_INDEX_OUT_OF_BOUNDS,
              ASSIGNMENT_TYPE_ERROR,
+             ANIMATION_BLOCK_ASSIGNMENT_PARAMETER_TYPE_ERROR,
              CANNOT_CHANGE_DERIVED_ATTRIBUTE,
              EXIT_STATUS_MUST_BE_AN_INTEGER,
              ILLEGAL_TOKEN,
@@ -78,6 +81,7 @@ class Error
              UNDECLARED_VARIABLE,
              UNKNOWN_CONSTRUCTOR_PARAMETER,
              VARIABLE_NOT_AN_ARRAY,
+             VARIABLE_IS_AN_ARRAY,
              DIVIDE_BY_ZERO_AT_PARSE_TIME,
              MOD_BY_ZERO_AT_PARSE_TIME,
              UNDEFINED_ERROR

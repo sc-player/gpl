@@ -191,7 +191,7 @@ variable_declaration:
 	Symbol * s;
 	if($1&INT){
 		if($3 && (!($3->get_type()&INT))){
-			Error::error(Error::INVALID_TYPE_FOR_INITIAL_VALUE, *$2, gpl_type_to_string($3->get_type()), gpl_type_to_string((Gpl_type)$1));
+			Error::error(Error::INVALID_TYPE_FOR_INITIAL_VALUE, gpl_type_to_string($3->get_type()), *$2, gpl_type_to_string((Gpl_type)$1));
 			s=new Symbol(0, *$2);
 			Symbol_table::instance()->addSymbol(s);
 		}
@@ -202,7 +202,7 @@ variable_declaration:
 	}
 	else if($1&DOUBLE){
 		if($3 && (!(($3->get_type()&INT)||($3->get_type()&DOUBLE)))){
-			Error::error(Error::INVALID_TYPE_FOR_INITIAL_VALUE, *$2, gpl_type_to_string($3->get_type()), gpl_type_to_string((Gpl_type)$1));
+			Error::error(Error::INVALID_TYPE_FOR_INITIAL_VALUE, gpl_type_to_string($3->get_type()), *$2, gpl_type_to_string((Gpl_type)$1));
 			s=new Symbol(0.0, *$2);
 			Symbol_table::instance()->addSymbol(s);
 		}
