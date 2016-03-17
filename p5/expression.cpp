@@ -205,6 +205,7 @@ int Expression::eval_int(){
 				assert(false);
 		}
 	}
+	return 0;
 }
 
 double Expression::eval_double(){
@@ -277,6 +278,7 @@ double Expression::eval_double(){
 			}
 		}
 	}
+	return 0.0;
 }
 
 std::string Expression::eval_string(){
@@ -306,4 +308,5 @@ std::string Expression::eval_string(){
 			}
 		}
 	}
+	return "";
 }
