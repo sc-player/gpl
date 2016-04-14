@@ -18,7 +18,7 @@ using namespace std;
 #include <glut.h>
 #else
 #include <GL/gl.h>
-#include <GL/glut.h>
+#include <GL/freeglut.h>
 #endif
 
 extern Window *window;
@@ -111,7 +111,7 @@ void keyboard_callback(unsigned char key, int x, int y)
     case 'Q' :
     case 'q' :
          user_quit_program();
-         exit(0);
+         glutLeaveMainLoop();
   }
 }
 
