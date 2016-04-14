@@ -22,6 +22,7 @@ class Variable{
 		int get_int_value();
 		double get_double_value();
 		std::string get_string_value();
+		std::string get_name(){return sym->get_name();}
 		Animation_block* get_animation_block_value();
 };
 #endif

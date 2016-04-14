@@ -29,5 +29,6 @@ class Expression{
 		std::string eval_string();
 		Animation_block * eval_animation_block();
 		Gpl_type get_type(){return type;}
+		std::string get_name();
 };
 #endif

@@ -24,7 +24,7 @@ extern int line_count;            // current line in the input; from record.l
 using namespace std;
 
 Game_object* cur_object_under_construction;
-std::string cur_object_name;
+std::string* cur_object_name = new std::string();
 // bison syntax to indicate the end of the header
 %} 
 
@@ -219,7 +219,7 @@ variable_declaration:
 			Symbol_table::instance()->addSymbol(s);
 		}
 		else{
-			s = new Symbol(($3)?$3->eval_double():0.0, *$2);
+			s = new Symbol(($3)?$3->eval_double():0, *$2);
 			Symbol_table::instance()->addSymbol(s);
 		}
 	}
@@ -293,27 +293,28 @@ object_declaration:
     {
 	switch($1){
 		case RECTANGLE:
-		cur_object_under_construction = new Rectangle();
+		cur_object_under_construction =new Rectangle();
 		break;
 		case TRIANGLE:
-		cur_object_under_construction = new Triangle();
+		cur_object_under_construction =new Triangle();
 		break;
 		case CIRCLE:
-		cur_object_under_construction = new Circle();
+		cur_object_under_construction =new Circle();
 		break;
 		case PIXMAP:
-		cur_object_under_construction = new Pixmap();
+		cur_object_under_construction =new Pixmap();
 		break;
 		case TEXTBOX:
-		cur_object_under_construction = new Textbox();
+		cur_object_under_construction =new Textbox();
 		break;
 		default:
 		break;
 	}
-	cur_object_name=*$2;
-	Symbol * s=new Symbol(cur_object_under_construction, *$2);
+	Symbol*s = new Symbol(cur_object_under_construction, (Gpl_type)$1, *$2);
+	*cur_object_name=*$2;
 	Symbol_table::instance()->addSymbol(s);
     }
+    
     T_LPAREN parameter_list_or_empty T_RPAREN
     | object_type T_ID T_LBRACKET expression T_RBRACKET
     {
@@ -374,7 +375,7 @@ parameter:
 				status = cur_object_under_construction->set_member_variable(*$1, $3->eval_int());
 			}
 			else{
-				Error::error(Error::INCORRECT_CONSTRUCTOR_PARAMETER_TYPE, cur_object_name, *$1);
+				Error::error(Error::INCORRECT_CONSTRUCTOR_PARAMETER_TYPE, *cur_object_name, *$1);
 			}
 		}
 		else if(type&DOUBLE){
@@ -382,7 +383,7 @@ parameter:
 				status = cur_object_under_construction->set_member_variable(*$1, $3->eval_double());
 			}
 			else{
-				Error::error(Error::INCORRECT_CONSTRUCTOR_PARAMETER_TYPE, cur_object_name, *$1);
+				Error::error(Error::INCORRECT_CONSTRUCTOR_PARAMETER_TYPE, *cur_object_name, *$1);
 			}
 		}
 		else if(type&STRING){
@@ -390,20 +391,22 @@ parameter:
 				status = cur_object_under_construction->set_member_variable(*$1, $3->eval_string());
 			}
 			else{
-				Error::error(Error::INCORRECT_CONSTRUCTOR_PARAMETER_TYPE, cur_object_name, *$1);
+				Error::error(Error::INCORRECT_CONSTRUCTOR_PARAMETER_TYPE, *cur_object_name, *$1);
 			}
 		}
 		else if(type&ANIMATION_BLOCK){
-			if($3->get_type()&ANIMATION_BLOCK){			
-				if(!(gpl_type_to_string(($3->eval_animation_block()->get_parameter_symbol()->get_type()))==(cur_object_under_construction->type()))){
-					Error::error(Error::TYPE_MISMATCH_BETWEEN_ANIMATION_BLOCK_AND_OBJECT, cur_object_name, "");
+			if($3->get_type()&ANIMATION_BLOCK){	
+				if(cur_object_name->empty() || ($3->eval_animation_block()->get_parameter_symbol()->get_type()!=Symbol_table::instance()->lookup(*cur_object_name)->get_type()))
+				{
+					Error::error(Error::TYPE_MISMATCH_BETWEEN_ANIMATION_BLOCK_AND_OBJECT, *cur_object_name, $3->get_name());
 				}
-				else{
+				else
+				{
 					status = cur_object_under_construction->set_member_variable(*$1, $3->eval_animation_block());
 				}
 			}
 			else{
-				Error::error(Error::INCORRECT_CONSTRUCTOR_PARAMETER_TYPE, cur_object_name, *$1);
+				Error::error(Error::INCORRECT_CONSTRUCTOR_PARAMETER_TYPE, *cur_object_name, *$1);
 			}	
 		}
 	}
@@ -450,6 +453,7 @@ animation_block:
 animation_parameter:
     object_type T_ID
     {
+	Symbol* s;
 	$$=$2;
 	if(Symbol_table::instance()->lookup(*$2)){
 		Error::error(Error::ANIMATION_PARAMETER_NAME_NOT_UNIQUE, *$2);
@@ -458,26 +462,26 @@ animation_parameter:
 	else{
 		switch($1){
 			case RECTANGLE:
-			cur_object_under_construction = new Rectangle();
+			cur_object_under_construction =new Rectangle();
 			break;
 			case TRIANGLE:
-			cur_object_under_construction = new Triangle();
+			cur_object_under_construction =new Triangle();
 			break;
 			case CIRCLE:
-			cur_object_under_construction = new Circle();
+			cur_object_under_construction =new Circle();
 			break;
 			case PIXMAP:
-			cur_object_under_construction = new Pixmap();
+			cur_object_under_construction =new Pixmap();
 			break;
 			case TEXTBOX:
-			cur_object_under_construction = new Textbox();
+			cur_object_under_construction =new Textbox();
 			break;
 			default:
 			break;
 		}
+		s=new Symbol(cur_object_under_construction, (Gpl_type)$1, *$2);
 		cur_object_under_construction->never_animate();
 		cur_object_under_construction->never_draw();
-		Symbol * s=new Symbol(cur_object_under_construction, *$2);
 		Symbol_table::instance()->addSymbol(s);
 	}
     }

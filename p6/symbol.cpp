@@ -32,10 +32,10 @@ Symbol::Symbol(std::string s, std::string n){
 	size=INT_MIN;
 }
 
-Symbol::Symbol(Game_object* g, std::string n){
-	package=g;
+Symbol::Symbol(Game_object* g, Gpl_type t, std::string n){
+	package = g;
+	type=t;
 	name=n;
-	type=GAME_OBJECT;
 	size=INT_MIN;
 }
 
@@ -88,7 +88,11 @@ Symbol::Symbol(std::string n, Gpl_type t, int sz){
 }
 
 void Symbol::print(std::ostream& os){
-	switch(type){
+	Gpl_type testType=type;
+	if((testType==RECTANGLE) || (testType==TRIANGLE) || (testType==CIRCLE) || (testType==TEXTBOX) || (testType==PIXMAP)){
+		testType=GAME_OBJECT;
+	}
+	switch(testType){
 		case INT:
 			os << "int " << name << " = " << *(int*)package << "\n";
 			break;

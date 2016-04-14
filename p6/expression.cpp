@@ -322,3 +322,10 @@ std::string Expression::eval_string(){
 Animation_block* Expression::eval_animation_block(){
 	return var->get_animation_block_value();
 }
+
+std::string Expression::get_name(){
+	std::string res;
+	(kind==VARIABLE)? res=var->get_name():res="";
+	if(res=="") assert(false);
+	return res;
+}
