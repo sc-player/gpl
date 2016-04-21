@@ -1,0 +1,3610 @@
+<!DOCTYPE html>
+<html><head>
+
+
+
+
+
+
+
+
+
+
+  <meta http-equiv="Pragma" content="no-cache">
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  <meta content="text/html; charset=windows-1252" http-equiv="CONTENT-TYPE"><title>GPL p6</title>
+
+
+
+
+
+
+
+
+
+
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  <meta content="OpenOffice.org 1.1.0 (Linux)" name="GENERATOR">
+
+
+
+
+
+
+
+
+
+
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  <meta content="Tyson Henry" name="AUTHOR">
+
+
+
+
+
+
+
+
+
+
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  <meta content="20040220;10215400" name="CREATED">
+
+
+
+
+
+
+
+
+
+
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  <meta content="Tyson Henry" name="CHANGEDBY">
+
+
+
+
+
+
+
+
+
+
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  <meta content="20040220;10221500" name="CHANGED"></head><body style="direction: ltr;" lang="en-US">
+
+
+
+
+
+
+
+
+
+
+
+<p><font size="4"><font size="5"><font size="4">Game Programming
+Language<br>
+
+
+
+
+
+
+
+
+
+
+Phase 6: Game Objects &amp; Forward Declarations</font></font></font><br>
+</p>
+<p>Update 11pm Saturday 3/26/2016&nbsp; old text is <span style="text-decoration: line-through;">strikethrough</span>, <span style="color: rgb(0, 153, 0);">new text is green</span><br>
+
+
+
+
+
+
+
+
+
+
+</p>
+
+
+
+
+
+
+
+
+
+
+
+<span style="color: rgb(255, 0, 0);"></span><span style="font-weight: bold;">Max OS X disclaimer</span>:
+&nbsp;textboxes and pixmaps are different sizes on Macs. &nbsp;Thus you
+will probably fail the stdout for all tests that have pixmaps and/or
+textboxes.<br>
+<br>
+<span style="font-weight: bold;">Spring 2016 Linux crashes on quit:</span>
+on some Linux computers, the files you received in the gpl.tar will
+sometimes cause the program to crash when you press q.&nbsp; You should
+download new versions of <a href="http://www.ecst.csuchico.edu/%7Etyson/classes/515.s16/src/p6/gpl.cpp">gpl.cpp</a> and <a href="http://www.ecst.csuchico.edu/%7Etyson/classes/515.s16/src/p6/window.cpp">window.cpp</a> and put them in your p6 directory AFTER you copy your p5 files to your p6 directory.<br>
+<br>
+
+
+
+
+
+
+
+
+
+
+<hr style="width: 100%; height: 2px;"><big style="font-weight: bold;">Overview:</big><br>
+
+
+
+
+
+
+
+
+
+
+<br>
+
+
+
+
+
+
+
+
+
+
+Add game objects and forward declarations to the parser you created in
+program 5. <br>
+
+
+
+
+
+
+
+
+
+
+<br>
+
+
+
+
+
+
+
+
+
+
+Your parser must handle:<br>
+
+
+
+
+
+
+
+
+
+
+<br>
+
+
+
+
+
+
+
+
+
+
+<div style="margin-left: 40px;">
+<table style="text-align: left; width: 800px;" border="1" cellpadding="2" cellspacing="2">
+
+
+
+
+
+
+
+
+
+
+  <tbody>
+
+
+
+
+
+
+
+
+
+
+    <tr>
+
+
+
+
+
+
+
+
+
+
+      <td style="vertical-align: top;">Everything that your p5 parser
+can handle<br>
+
+
+
+
+
+
+
+
+
+
+      </td>
+
+
+
+
+
+
+
+
+
+
+      <td style="vertical-align: top;"><br>
+
+
+
+
+
+
+
+
+
+
+      </td>
+
+
+
+
+
+
+
+
+
+
+    </tr>
+
+
+
+
+
+
+
+
+
+
+    <tr>
+
+
+
+
+
+
+
+
+
+
+      <td style="vertical-align: top;">Forward declarations<br>
+
+
+
+
+
+
+
+
+
+
+      </td>
+
+
+
+
+
+
+
+
+
+
+      <td style="vertical-align: top;">forward animation bounce(circle
+cur_circle);<br>
+
+
+
+
+
+
+
+
+
+
+      </td>
+
+
+
+
+
+
+
+
+
+
+    </tr>
+
+
+
+
+
+
+
+
+
+
+    <tr>
+
+
+
+
+
+
+
+
+
+
+      <td style="vertical-align: top;">game object declarations<br>
+
+
+
+
+
+
+
+
+
+
+      </td>
+
+
+
+
+
+
+
+
+
+
+      <td style="vertical-align: top;">rectangle my_rectangle();<br>
+
+
+
+
+
+
+
+
+
+
+circle my_circle(x = 100, y = 100, radius = 30);<br>
+
+
+
+
+
+
+
+
+
+
+      </td>
+
+
+
+
+
+
+
+
+
+
+    </tr>
+
+
+
+
+
+
+
+
+
+
+    <tr>
+
+
+
+
+
+
+
+
+
+
+      <td style="vertical-align: top;">expressions with animation blocks<br>
+
+
+
+
+
+
+
+
+
+
+      </td>
+
+
+
+
+
+
+
+
+
+
+      <td style="vertical-align: top;">circle my_circle(animation_block
+= bounce);<br>
+
+
+
+
+
+
+
+
+
+
+      </td>
+
+
+
+
+
+
+
+
+
+
+    </tr>
+
+
+
+
+
+
+
+
+
+
+    <tr>
+
+
+
+
+
+
+
+
+
+
+      <td style="vertical-align: top;">expressions with member variables<br>
+
+
+
+
+
+
+
+
+
+
+      </td>
+
+
+
+
+
+
+
+
+
+
+      <td style="vertical-align: top;">int i = my_rectangle.x + 20;<br>
+
+
+
+
+
+
+
+
+
+
+      </td>
+
+
+
+
+
+
+
+
+
+
+    </tr>
+
+
+
+
+
+
+
+
+
+
+    
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  </tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+<br>
+
+
+
+
+
+
+
+
+
+
+</div>
+
+
+
+
+
+
+
+
+
+
+<br>
+
+
+
+
+
+
+
+
+
+
+When you print game objects that are in the symbol table, you should
+print them
+using the print
+function Game_object::print().&nbsp; Since
+you are using my
+code, the output should automatically look like:<br>
+
+
+
+
+
+
+
+
+
+
+<br>
+
+
+
+
+
+
+
+
+
+
+<pre>Rectangle<br>{<br>  animation = 0,<br>  blue = double(0),<br>  green = double(0),<br>  h = int(10),<br>  red = double(1),<br>  rotation = double(0),<br>  visible = int(1),<br>  w = int(10),<br>  x = int(5),<br>  y = int(6)<br>}<br></pre><br>
+
+
+
+
+
+
+
+
+
+
+<div style="margin-left: 40px;">
+<table style="text-align: left; width: 100%; height: 284px;" border="1" cellpadding="2" cellspacing="2">
+
+
+
+
+
+
+
+
+
+
+  <tbody>
+
+
+
+
+
+
+
+
+
+
+    <tr>
+
+
+
+
+
+
+
+
+
+
+      <td style="vertical-align: top;"><span style="font-weight: bold;">Class</span><br>
+
+
+
+
+
+
+
+
+
+
+      </td>
+
+
+
+
+
+
+
+
+
+
+      <td style="vertical-align: top;"><span style="font-weight: bold;">Description
+      </span><br>
+
+
+
+
+
+
+
+
+
+
+      </td>
+
+
+
+
+
+
+
+
+
+
+    </tr>
+
+
+
+
+
+
+
+
+
+
+    <tr>
+
+
+
+
+
+
+
+
+
+
+      <td style="vertical-align: top;"><a href="http://www.ecst.csuchico.edu/%7Etyson/classes/515.s16/src/p6/window.h">Window</a><br>
+
+
+
+
+
+
+
+
+
+
+      </td>
+
+
+
+
+
+
+
+
+
+
+      <td style="vertical-align: top;">creates gpl window, only called
+from gpl.cpp.&nbsp; You don't do anything with it in p6.<br>
+
+
+
+
+
+
+
+
+
+
+      </td>
+
+
+
+
+
+
+
+
+
+
+    </tr>
+
+
+
+
+
+
+
+
+
+
+    <tr>
+
+
+
+
+
+
+
+
+
+
+      <td style="vertical-align: top;"><a href="http://www.ecst.csuchico.edu/%7Etyson/classes/515.s16/src/p6/game_object.h">Game_object</a><br>
+
+
+
+
+
+
+
+
+
+
+      </td>
+
+
+
+
+
+
+
+
+
+
+      <td style="vertical-align: top;">Base class for all game
+objects.&nbsp; You won't create a Game_object (you create objects that inherit it), but your program will deal
+with Game_object pointers (Game_object *).<br>
+
+
+
+
+
+
+
+
+
+
+      </td>
+
+
+
+
+
+
+
+
+
+
+    </tr>
+
+
+
+
+
+
+
+
+
+
+    <tr>
+
+
+
+
+
+
+
+
+
+
+      <td style="vertical-align: top;"><a href="http://www.ecst.csuchico.edu/%7Etyson/classes/515.s16/src/p6/rectangle.h">Rectangle</a><br>
+
+
+
+
+
+
+
+
+
+
+      </td>
+
+
+
+
+
+
+
+
+
+
+      <td style="vertical-align: top;">rectangle game object<br>
+
+
+
+
+
+
+
+
+
+
+      </td>
+
+
+
+
+
+
+
+
+
+
+    </tr>
+
+
+
+
+
+
+
+
+
+
+    <tr>
+
+
+
+
+
+
+
+
+
+
+      <td style="vertical-align: top;"><a href="http://www.ecst.csuchico.edu/%7Etyson/classes/515.s16/src/p6/circle.h">Circle</a><br>
+
+
+
+
+
+
+
+
+
+
+      </td>
+
+
+
+
+
+
+
+
+
+
+      <td style="vertical-align: top;">circle game object<br>
+
+
+
+
+
+
+
+
+
+
+      </td>
+
+
+
+
+
+
+
+
+
+
+    </tr>
+
+
+
+
+
+
+
+
+
+
+    <tr>
+
+
+
+
+
+
+
+
+
+
+      <td style="vertical-align: top;"><a href="http://www.ecst.csuchico.edu/%7Etyson/classes/515.s16/src/p6/textbox.h">Textbox</a><br>
+
+
+
+
+
+
+
+
+
+
+      </td>
+
+
+
+
+
+
+
+
+
+
+      <td style="vertical-align: top;">textbox game object<br>
+
+
+
+
+
+
+
+
+
+
+      </td>
+
+
+
+
+
+
+
+
+
+
+    </tr>
+
+
+
+
+
+
+
+
+
+
+    <tr>
+
+
+
+
+
+
+
+
+
+
+      <td style="vertical-align: top;"><a href="http://www.ecst.csuchico.edu/%7Etyson/classes/515.s16/src/p6/triangle.h">Triangle</a><br>
+
+
+
+
+
+
+
+
+
+
+      </td>
+
+
+
+
+
+
+
+
+
+
+      <td style="vertical-align: top;">triangle game object<br>
+
+
+
+
+
+
+
+
+
+
+      </td>
+
+
+
+
+
+
+
+
+
+
+    </tr>
+
+
+
+
+
+
+
+
+
+
+    <tr>
+
+
+
+
+
+
+
+
+
+
+      <td style="vertical-align: top;"><a href="http://www.ecst.csuchico.edu/%7Etyson/classes/515.s16/src/p6/pixmap.h">Pixmap</a><br>
+
+
+
+
+
+
+
+
+
+
+      </td>
+
+
+
+
+
+
+
+
+
+
+      <td style="vertical-align: top;">pixmap game object (uses
+default_pixmap.h)<br>
+
+
+
+
+
+
+
+
+
+
+      </td>
+
+
+
+
+
+
+
+
+
+
+    </tr>
+
+
+
+
+
+
+
+
+
+
+    <tr>
+
+
+
+
+
+
+
+
+
+
+      <td style="vertical-align: top;"><a href="http://www.ecst.csuchico.edu/%7Etyson/classes/515.s16/src/p6/statement_block.h">Statement_block</a><br>
+
+
+
+
+
+
+
+
+
+
+      </td>
+
+
+
+
+
+
+
+
+
+
+      <td style="vertical-align: top;">Skeleton class to act as the base class for class Animation_block (see below). &nbsp;Will eventually
+hold statements for animation blocks and event blocks (i.e. will hold if statement, for statements, etc.).<br>
+
+
+
+
+
+
+
+
+
+
+      </td>
+
+
+
+
+
+
+
+
+
+
+    </tr>
+
+
+
+
+
+
+
+
+
+
+    <tr>
+
+
+
+
+
+
+
+
+
+      <td><a href="http://www.ecst.csuchico.edu/%7Etyson/classes/515.s16/src/p6/animation_block.h">Animation_block</a></td>
+
+
+
+
+
+
+
+
+
+      <td>Skeleton class so you can set
+the animation_block parameter in p6.&nbsp; In p6 you will use pointers
+to Animation_block and call its print functions.&nbsp;&nbsp;</td>
+
+
+
+
+
+
+
+
+
+    </tr>
+
+
+
+
+
+
+
+
+
+    <tr>
+
+
+
+
+
+
+
+
+
+
+      <td style="vertical-align: top;"><a href="http://www.ecst.csuchico.edu/%7Etyson/classes/515.s16/src/p6/event_manager.h">Event_manager</a><br>
+
+
+
+
+
+
+
+
+
+
+      </td>
+
+
+
+
+
+
+
+
+
+
+      <td style="vertical-align: top;">Skeleton class so that gpl.cpp
+will compile.&nbsp; You don't have to do anything with it in p6.<br>
+
+
+
+
+
+
+
+
+
+
+      </td>
+
+
+
+
+
+
+
+
+
+
+    </tr>
+
+
+
+
+
+
+
+
+
+
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  </tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+<br>
+
+
+
+
+
+
+
+
+
+
+</div>
+
+
+
+
+
+
+
+
+
+
+<br>
+
+
+
+
+
+
+
+
+
+
+The game objects and the window object use the OpenGL and GLUT
+libraries.&nbsp; You will have to have these installed on your machine
+before you can use these files.&nbsp; Check the class <a href="http://www.ecst.csuchico.edu/%7Etyson/classes/515.s16/docs/software_installation.html">software
+installation page</a> if you don't have them installed.&nbsp; <br>
+
+
+
+
+
+
+
+
+
+
+<br>
+
+
+
+
+
+
+
+
+
+
+A significant part of this assignment is figuring out how to use my
+code.&nbsp; If you don't understand how something works, ask me.<br>
+
+
+
+
+
+
+
+
+
+
+<br>
+
+
+
+
+
+
+
+
+
+
+<hr style="width: 100%; height: 2px;"><big>Steps to follow:</big><br>
+
+
+
+
+
+
+
+
+
+
+<ol>
+
+
+
+
+
+
+
+
+
+
+  <li>Update the symbol <span style="text-decoration: line-through;">and symbol_table classes so that they</span> <span style="color: rgb(0, 153, 0);">so it </span>can
+handle game objects.&nbsp; class Game_object is the base class for all
+games objects, thus you want to be able to put a Game_object * in a
+symbol.<br>
+
+
+
+
+
+
+
+
+
+
+  </li>
+
+
+
+
+
+
+
+
+
+
+  <li>Add code to gpl.y so that you can create game objects that don't
+have any parameters (rectangle my_rectangle();) .<br>
+
+
+
+
+
+
+
+
+
+
+  </li>
+
+
+
+
+
+
+
+
+
+
+  <li>The
+Makefile should automatically turn on graphics for p6.&nbsp; Make sure
+your working directory is called "p6" and that it is compiling gpl.cpp with -DGRAPHICS.&nbsp; When you run your
+program you should see a window with
+a game object in the lower left and the game objects should print in
+the symbol table (see <a href="http://www.ecst.csuchico.edu/%7Etyson/classes/515.s16/src/p6/tests/t001.gpl">t001.gpl</a>, <a href="http://www.ecst.csuchico.edu/%7Etyson/classes/515.s16/tests/p6/tests/t001.out">t001.out</a>, and <a href="http://www.ecst.csuchico.edu/%7Etyson/classes/515.s16/tests/p6/tests/t001.jpg">t001.jpg</a>).</li>
+
+
+
+
+
+
+
+
+
+
+  <li>Add code to gpl.y to parse game object initialization parameters
+(e.g.&nbsp; rectangle my_rectangle(x = 100, y = 100);).&nbsp; Don't
+handle animation_blocks yet.&nbsp; Your rectangle should be at a
+different position in the window, and the print out of the rectangle
+should show these x,y values (see <a href="http://www.ecst.csuchico.edu/%7Etyson/classes/515.s16/src/p6/tests/t002.gpl">t002.gpl</a>,
+    <a href="http://www.ecst.csuchico.edu/%7Etyson/classes/515.s16/src/p6/tests/t002.out">t002.out</a>, and <a href="http://www.ecst.csuchico.edu/%7Etyson/classes/515.s16/tests/p6/tests/t002.jpg">t002.jpg</a>)<br>
+
+
+
+
+
+
+
+
+
+
+  </li>
+
+
+
+
+
+
+
+
+
+
+  <li>Update the symbol <span style="text-decoration: line-through;">and symbol_table classes so that they</span> so it can
+handle animation blocks (i.e. <span style="text-decoration: line-through;">update them so they can </span>handle a pointer to
+class Animation_block).</li>
+
+
+
+
+
+
+
+
+
+
+  <li>Implement forward declarations in gpl.y.</li>
+
+
+
+
+
+
+
+
+
+
+  <li>Update expressions so that they can handle pointers to animation
+blocks (need this for #8).<br>
+
+
+
+
+
+
+
+
+
+
+  </li>
+
+
+
+
+
+
+
+
+
+
+  <li>Add code to your game object parameters (#4 above) so that you
+can initialize animation_blocks (they won't do anything yet, just show
+up in the symbol table) (see <a href="http://www.ecst.csuchico.edu/%7Etyson/classes/515.s16/src/p6/tests/t003.gpl">t003.gpl</a>, <a href="http://www.ecst.csuchico.edu/%7Etyson/classes/515.s16/tests/p6/tests/t003.out">t003.out</a>, and <a href="http://www.ecst.csuchico.edu/%7Etyson/classes/515.s16/tests/p6/tests/t003.jpg">t003.jpg</a>).</li>
+
+
+
+
+
+
+
+
+
+
+  <li>Add member variables to class Variable and add code to gpl.y to
+parse member variables&nbsp; (see <a href="http://www.ecst.csuchico.edu/%7Etyson/classes/515.s16/src/p6/tests/t004.gpl">t004.gpl</a>,
+    <a href="http://www.ecst.csuchico.edu/%7Etyson/classes/515.s16/src/p6/tests/t004.out">t004.out</a>, and <a href="http://www.ecst.csuchico.edu/%7Etyson/classes/515.s16/tests/p6/tests/t004.jpg">t004.jpg</a>).&nbsp; You should not have to
+change Expression.<br>
+
+
+
+
+
+
+
+
+
+
+  </li>
+
+
+
+
+
+
+
+
+
+
+  <li>Add array member variables to class Variable and add code to
+gpl.y
+to parse array member variables (see <a href="http://www.ecst.csuchico.edu/%7Etyson/classes/515.s16/src/p6/tests/t005.gpl">t005.gpl</a>,
+    <a href="http://www.ecst.csuchico.edu/%7Etyson/classes/515.s16/src/p6/tests/t005.out">t005.out</a>, and <a href="http://www.ecst.csuchico.edu/%7Etyson/classes/515.s16/tests/p6/tests/t005.jpg">t005.jpg</a>).<br>
+
+
+
+
+
+
+
+
+
+
+  </li>
+
+
+
+
+
+
+
+
+
+
+</ol>
+
+
+
+
+
+
+
+
+
+
+<br>
+
+
+
+
+
+
+
+
+
+
+<hr style="width: 100%; height: 2px;">Step 1: Update the symbol <span style="text-decoration: line-through;">and
+symbol_table classes so that they</span> <span style="color: rgb(0, 153, 0);">so it</span> can handle game
+objects.&nbsp; class Game_object is the base class for all game
+objects,
+thus you want to be able to put a Game_object * in the symbol.<br>
+
+
+
+
+
+
+
+
+
+
+<br>
+
+
+
+
+
+
+
+
+
+
+When a game object is declared:<br>
+
+
+
+
+
+
+
+
+
+
+<br>
+
+
+
+
+
+
+
+
+
+
+&nbsp;&nbsp;&nbsp; rectangle my_rectangle();<br>
+
+
+
+
+
+
+
+
+
+
+<br>
+
+
+
+
+
+
+
+
+
+
+it must be inserted into the symbol table (just like integers, doubles,
+strings).&nbsp; Since all game objects (rectangle, circle, textbox,
+etc) inherit from class Game_object, you can use a pointer to a game
+object (Game_object *) to store them in the symbol table.<br>
+
+
+
+
+
+
+
+
+
+
+<br>
+
+
+
+
+
+
+
+
+
+
+Add constructors and access functions (e.g.&nbsp; Game_object
+*Symbol::get_game_object_value()) to <span style="text-decoration: line-through;">class Symbol_table and </span>class
+Symbol. <br>
+
+
+
+
+
+
+
+
+
+
+<br>
+
+
+
+
+
+
+
+
+
+
+There is a Gpl_type GAME_OBJECT which should be thought of as a
+Game_object *.<br>
+
+
+
+
+
+
+
+
+
+
+<br>
+
+
+
+
+
+
+
+
+
+
+You will have to update your Symbol::print() so that it can print game
+objects.&nbsp; Use <span style="text-decoration: line-through;">the overloaded operator&lt;&lt; functions for
+Game_objects or use</span> Game_object::print() (see <a href="http://www.ecst.csuchico.edu/%7Etyson/classes/515.s16/src/p6/game_object.h">game_object.h</a>)<br>
+
+
+
+
+
+
+
+
+
+
+<br>
+
+
+
+
+
+
+
+
+
+
+<hr style="width: 100%; height: 2px;">Step 2: There are two parts to
+creating game objects (Part A) create the object and (Part B) set the
+parameter values specified. &nbsp;
+Step 2 is the Part A. &nbsp;After Step 2 you will be able to&nbsp;parse
+programs that contain game objects but don't specify any parameters.
+&nbsp;In Step 4 you will implement Part B. &nbsp;<br>
+
+<br>
+
+In order to set the parameter values it is easiest if the object is
+created before the parameter values are parsed. &nbsp;Consider the
+following rule:<br>
+
+<br>
+
+
+
+
+object_declaration:<br>
+
+
+
+
+
+
+
+
+
+
+&nbsp;&nbsp;&nbsp; object_type T_ID <span style="color: rgb(255, 0, 0);">{here} </span>T_LPAREN
+parameter_list_or_empty T_RPAREN<br>
+
+<br>
+
+<br>
+
+bison allows you to specify an action anywhere on the right-hand-side
+of a production. &nbsp;In the above rule the action (marked by <span style="color: rgb(255, 0, 0);">{here}</span>) is inserted in the middle of the right hand side. &nbsp;If you create the game object at the location marked by <span style="color: rgb(255, 0, 0);">{here}</span>&nbsp;then
+when the parameter list is parsed the object will have already been
+created. &nbsp;Consider the following action fragment (which goes in
+the <span style="color: rgb(255, 0, 0);">{here}</span>):<br>
+
+<br>
+
+
+
+
+
+
+
+
+
+
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp; if the object being created is a triangle<br>
+
+
+
+
+
+
+
+
+
+
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;
+&nbsp;&nbsp; cur_object_under_construction = new Triangle();<br>
+
+
+
+
+
+
+
+
+
+
+&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>
+
+cur_object_under_construction is a global variable that stores the
+object that is currently being created. &nbsp;It can be used in Step 4
+when the parameters are parsed. &nbsp;Consider the following
+declaration:<br>
+
+<br>
+
+&nbsp;&nbsp;&nbsp; rectangle rect(x = 42, y = 42);<br>
+
+<br>
+
+The rectangle is constructed before the parameters are parsed. &nbsp;A
+pointer to the object is placed in the global variable
+cur_object_under_construction. &nbsp;When the parameter (for example:
+x = 42) is, the "x" field of cur_object_under_construction can
+be set to 42.<br>
+
+
+
+
+
+
+
+
+
+
+<span style="text-decoration: line-through;"></span><br>
+
+
+
+
+
+
+
+
+
+
+There are two productions for creating
+game objects.&nbsp; The first creates a single object, the second
+creates an array of objects.&nbsp; <br>
+
+<br>
+
+There is a second production for creating game objects. &nbsp;But since arrays of game objects
+cannot be initialized, you don't have to worry about the
+notion of a current object under construction for arrays of game objects.<br>
+
+
+
+
+<br>
+
+
+
+
+<br>
+
+
+
+
+object_declaration:<br>
+
+
+
+
+
+
+
+
+
+
+&nbsp;&nbsp;&nbsp; object_type T_ID <span style="color: rgb(255, 0, 0);">{here} </span>T_LPAREN
+parameter_list_or_empty T_RPAREN<br>
+
+
+
+
+
+
+
+
+
+
+&nbsp;&nbsp;&nbsp; |<br>
+
+
+
+
+
+
+
+
+
+
+&nbsp;&nbsp;&nbsp; object_type T_ID
+T_LBRACKET expression T_RBRACKET<br>
+
+
+
+
+
+
+
+
+
+
+<br>
+
+
+
+
+
+
+
+
+
+
+object_type will match one of the
+types of game objects (T_RECTANGLE, T_TRIANGLE, etc).&nbsp; <span style="text-decoration: line-through;">It is
+easiest to implement it so that it returns the token it matches&nbsp;.&nbsp;
+For example, if object_type matches T_CIRCLE, return the integer
+T_CIRCLE (recall that bison defines tokens like T_CIRCLE as an integer constant (search for T_CIRCLE in&nbsp; y.tab.h)).</span>&nbsp; <span style="color: rgb(0, 153, 0);">object_type should pass the object's type up the tree (e.g. $$ = TRIANGLE) just like simple_type.</span><br>
+
+
+
+
+
+
+
+
+
+
+<br>
+
+
+
+
+
+
+
+
+
+
+If you do this, then in the code in
+the <span style="color: rgb(255, 0, 0);">{here}</span> action you can
+create the correct new
+object:<br>
+
+
+
+
+
+
+
+
+
+
+<br>
+
+
+
+
+
+
+
+
+
+
+&nbsp;&nbsp;&nbsp; switch ($1)<br>
+
+
+
+
+
+
+
+
+
+
+&nbsp;&nbsp;&nbsp; {<br>
+
+
+
+
+
+
+
+
+
+
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp; case
+<span style="text-decoration: line-through;">T_</span>TRIANGLE:<br>
+
+
+
+
+
+
+
+
+
+
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;
+&nbsp;&nbsp; cur_object_under_construction = new Triangle();<br>
+
+
+
+
+
+
+
+
+
+
+&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; break;<br>
+
+
+
+
+
+
+
+
+
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+....<br>
+
+
+
+
+
+
+
+
+
+
+&nbsp;&nbsp;&nbsp;&nbsp; }<br>
+
+
+
+
+
+
+
+
+
+
+<br>
+The action for creating an array of
+game objects will be very similar to the code for creating an array of
+simple objects (int, double, string).&nbsp; You get the type of the
+game object from $1, you evaluate the expression ($4-&gt;eval_int() )
+to get the size of the array, and then you pass the type and the array
+size to the Symbol's constructor.&nbsp; I use the same Symbol
+constructor that I use for simple objects; I added CIRCLE, RECTANGLE,
+TRIANGLE, TEXTBOX, PIXMAP to the switch statement inside this
+constructor so it can create arrays of these game objects.<br>
+
+
+
+
+
+
+
+
+
+
+<hr style="width: 100%; height: 2px;">Step 3: Make sure you are
+compiling gpl.cpp with -DGRAPHICS in your Makefile; this should happen automatically if the directory is named "p6".&nbsp;
+When you run your program with t001.gpl you should see a window with a game object in
+the lower left and the game objects should print in the symbol table
+(see <a href="http://www.ecst.csuchico.edu/%7Etyson/classes/515.s16/src/p6/tests/t001.gpl">t001.gpl</a>,
+<a href="http://www.ecst.csuchico.edu/%7Etyson/classes/515.s16/src/p6/tests/t001.out">t001.out</a>,
+and <a href="http://www.ecst.csuchico.edu/%7Etyson/classes/515.s16/src/p6/tests/t001.jpg">t001.jpg</a>).<br>
+
+
+
+
+
+
+
+
+
+
+<br style="text-decoration: line-through;"><span style="text-decoration: line-through;">
+
+
+
+
+
+gpl.cpp only creates the gpl window if it is compiled with the command
+line argument -DGRAPHICS.&nbsp; That means you must edit your Makefile
+so that lines compiling gpl.cpp with the -DGRAPHICS are uncommented and
+all the others are commented.</span><br>
+<br>
+<span style="color: rgb(0, 153, 0);">Starting in p6, in gpl.cpp
+reserved variables (such as window_w and window_h) are read from the
+symbol table.&nbsp; For this to work your Symbol_table and Symbol
+classes must provide the correct functions.&nbsp; Consider the
+following code for reading the window_x:</span><br style="color: rgb(0, 153, 0);">
+<br style="font-family: monospace; color: rgb(0, 153, 0);">
+<div style="margin-left: 40px; font-family: monospace; color: rgb(0, 153, 0);"><big>&nbsp;&nbsp;&nbsp; Symbol *symbol;<br>
+&nbsp;&nbsp;&nbsp; int window_x;<br>
+<br>
+&nbsp;&nbsp;&nbsp; // look for window_x in the symbol table.&nbsp; If found use it for the default window x<br>
+&nbsp;&nbsp;&nbsp; symbol = symbol_table-&gt;lookup("window_x");<br>
+&nbsp;&nbsp;&nbsp; if (symbol != NULL)<br>
+&nbsp;&nbsp;&nbsp; {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; // if this variable does not have the type INT<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; if (symbol-&gt;get_type() != INT)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Error::error(Error::INVALID_TYPE_FOR_RESERVED_VARIABLE,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+"window_x",<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+gpl_type_to_string(symbol-&gt;get_type()),<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; "int"<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; );<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; // else this variable has the correct type, override the default<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; else window_x = symbol-&gt;get_int_value();<br>
+&nbsp;&nbsp;&nbsp; }</big><br>
+</div>
+<br style="color: rgb(0, 153, 0);">
+
+
+
+
+
+
+
+
+
+
+<span style="color: rgb(0, 153, 0);">In order for this to work, your
+class Symbol_table must provide the lookup function Symbol
+*Symbol_table::lookup(string target) (return NULL if not found, return
+the symbol * if found) and your class Symbol must provide Gpl_type
+Symbol::get_type(), int Symbol::get_int_value(), double
+Symbol::get_double_value(), and String Symbol::get_string_value()
+functions.</span><br>
+<br><span style="text-decoration: line-through;">
+
+
+
+
+
+
+
+
+
+
+In order to get graphics mode (i.e. when you compile gpl.cpp using
+-DGRAPHICS) working you must provide the following functions in
+Symbol_table</span><br style="text-decoration: line-through;">
+
+
+
+
+
+
+
+
+
+
+<pre style="text-decoration: line-through;">	bool get(string name, int &amp;value);<br>	bool get(string name, double &amp;value);<br>	bool get(string name, string &amp;value);<br>	bool get_type(string name, Gpl_type &amp;type);<br>	bool set(string name, int value); // used for mouse_x, mouse_y<br></pre><span style="text-decoration: line-through;">
+
+
+
+
+
+
+
+
+
+
+gpl.cpp uses these functions to look for reserved variables (e.g.
+window_width, window_height, ...) in the symbol table.&nbsp; As an
+example, here is my get for integers:</span><br style="text-decoration: line-through;">
+
+
+
+
+
+
+
+
+
+
+<br style="text-decoration: line-through;">
+
+
+
+
+
+
+
+
+
+
+<pre style="text-decoration: line-through;">	bool <br>	Symbol_table::get(string name, int &amp;value)<br>	{<br> 	   Symbol *cur = lookup(name);<br> 	   if (!cur || !cur-&gt;is_int())<br>  	      return false;<br><br> 	   value = cur-&gt;get_int_value();<br> 	   return true;<br>	}<br></pre>
+
+
+
+
+
+
+
+
+
+
+<br>
+
+
+
+
+
+
+
+
+
+
+I think it is important that you get test t001 working before you go on.<br>
+
+
+
+
+
+
+
+
+
+
+<br>
+
+
+
+
+
+
+
+
+
+
+<hr style="width: 100%; height: 2px;">Step 4: Add code to gpl.y to
+parse game object initialization parameters (e.g.&nbsp;
+rectangle my_rectangle(x = 100, y = 100);).&nbsp; Don't handle
+animation_blocks yet.&nbsp; Once step 4 is complete, your rectangle should be at a different
+position
+in the window, and the print out of the rectangle should show these x,y
+values (see <a href="http://www.ecst.csuchico.edu/%7Etyson/classes/515.s16/src/p6/tests/t002.gpl">t002.gpl</a>,
+<a href="http://www.ecst.csuchico.edu/%7Etyson/classes/515.s16/src/p6/tests/t002.out">t002.out</a>,
+and <a href="http://www.ecst.csuchico.edu/%7Etyson/classes/515.s16/src/p6/tests/t002.jpg">t002.jpg</a>)<br>
+
+
+
+
+
+
+
+
+
+
+<br>
+
+
+
+
+
+
+
+
+
+
+This is conceptually the hardest part of this phase.&nbsp; However,
+once you get how it works, it is not hard to implement.<br>
+
+
+
+
+
+
+
+
+
+
+<br>
+
+
+
+
+
+
+
+
+
+
+Consider the following rule:<br>
+
+
+
+
+
+
+
+
+
+
+<br>
+
+
+
+
+
+
+
+
+
+
+<div style="margin-left: 40px;">object_declaration:<br>
+
+
+
+
+
+
+
+
+
+
+<div style="margin-left: 40px;">object_type T_ID <span style="color: rgb(255, 0, 0);">{here}</span> T_LPAREN
+parameter_list_or_empty T_RPAREN<br>
+
+
+
+
+
+
+
+
+
+
+<br>
+
+
+
+
+
+
+
+
+
+
+</div>
+
+
+
+
+
+
+
+
+
+
+</div><br>
+It is easiest if the object is created <span style="font-weight: bold;">before
+</span>parameter_list_or_empty is matched by the parser.&nbsp; If you
+create the object and put it in the symbol table in the&nbsp;<span style="color: rgb(255, 0, 0);">{here}</span> action (as is shown in step 2) then all you have to do is set a global variable in the <span style="color: rgb(255, 0, 0);">{here}</span>
+action
+to point to the game object you just created. &nbsp;Once you do this&nbsp;the parameter rules
+can use the global variable to
+insert parameters into the object.&nbsp; <br>
+
+
+
+
+
+
+
+
+
+
+<br>
+
+
+
+
+
+
+
+
+
+
+The following rule will match all the parameters (one at a time):<br>
+
+
+
+
+
+
+
+
+
+
+<pre>    parameter:<br>	T_ID T_ASSIGN expression<br></pre>
+
+
+
+
+
+
+
+
+
+
+<br>
+
+
+
+
+
+
+
+
+
+
+The heart of the action for this rule is:<br>
+
+
+
+
+
+
+
+
+
+
+<br>
+
+
+
+
+
+
+
+
+
+
+&nbsp;&nbsp;&nbsp;
+Status status = cur_object_under_construction-&gt;set_member_variable(&lt;member
+name&gt;, &lt;value&gt;);<br>
+
+
+
+
+
+
+
+
+
+
+<br>
+
+
+
+
+
+
+
+
+
+
+The global variable cur_object_under_construction was set in in the <span style="color: rgb(255, 0, 0);">{here}</span> action.&nbsp; The value
+is retrieved from calling eval on the expression ($3).&nbsp;&nbsp; You
+will need code to handle all the possible different types for the
+values (INT, DOUBLE, STRING) [in step 8 you will add ANIMATION_BLOCK to
+this list].<br>
+
+
+
+
+
+
+
+
+
+
+<br>
+
+
+
+
+
+
+
+
+
+
+Game_object contains functions for getting and setting member
+variables.&nbsp; These functions are overloaded so they can handle all
+the possible types of member variables.<span style="color: rgb(255, 0, 0);"></span> <br>
+
+
+
+
+
+
+
+
+
+
+<br>
+
+
+
+
+
+
+
+
+
+
+In addition to having a global variable for the current object under
+construction, you will also need a global variable for the name
+of the current object under construction for the following error
+messages:<br>
+
+
+
+
+
+
+
+
+
+
+<pre style="margin-left: 40px;">Error::UNKNOWN_CONSTRUCTOR_PARAMETER<br>Error::INCORRECT_CONSTRUCTOR_PARAMETER_TYPE</pre>
+
+
+
+
+
+
+
+
+
+
+These errors are issued in the parameter rule and they require the name
+of the game object being constructed.&nbsp; The only way you will be
+able to get your hands on the name of the object being constructed is
+to use a global variable initialized in the <span style="color: rgb(255, 0, 0);">{here}</span>&nbsp; action.<br>
+
+
+
+
+
+
+
+
+
+
+<br>
+
+
+
+
+
+
+
+
+
+
+<hr style="width: 100%; height: 2px;">Step 5: Update the symbol <span style="text-decoration: line-through;">and
+symbol_table</span> class<span style="text-decoration: line-through;">es</span> so that they can handle animation blocks (i.e. update it so it can handle a pointer to
+class Animation_block).<br>
+
+
+
+
+
+
+
+
+
+
+<br>
+
+
+
+
+
+
+
+
+The animation_block parameter of game objects is a pointer to an
+Animation_block.&nbsp; In the final phase, this pointer will be used to
+execute the animation blocks.&nbsp; Consider how the animation_block
+parameter is set:<br>
+
+
+
+
+
+
+
+
+
+
+<br>
+
+
+
+
+
+
+
+
+
+
+<div style="margin-left: 40px;">
+<pre>forward animation bounce(rectangle cur_rectangle);<br><br>rectangle my_rectangle(animation_block = bounce);</pre>
+
+
+
+
+
+
+
+
+
+
+</div>
+
+
+
+
+
+
+
+
+
+
+<br>
+
+
+
+
+
+
+
+
+The variable name bounce needs to be associated with a pointer to an
+animation block (Animation_block *).&nbsp; In order to do this we need
+to add a new type to Symbol<span style="text-decoration: line-through;"> and Symbol_table</span>.&nbsp; Add functions to Symbol so it can hold a variable with type animation block.<br>
+
+
+
+
+
+
+
+
+
+
+<br>
+
+
+
+
+
+
+
+
+
+
+There is a Gpl_type ANIMATION_BLOCK which should be thought of as a Animation_block *.<br>
+
+
+
+
+
+
+
+
+
+
+<br>
+
+
+
+
+
+
+
+
+
+
+<hr style="width: 100%; height: 2px;">Step 6: Implement forward
+declarations in gpl.y.<br>
+
+
+
+
+
+
+
+
+
+
+<br>
+
+
+
+
+
+
+
+
+
+
+When you parse a forward statement two objects need to be put in the
+symbol table:&nbsp; an Animation_block and a Game_object.&nbsp; <br>
+
+
+
+
+
+
+
+
+
+
+<br>
+
+
+
+
+
+
+
+
+
+
+The Animation_block should be a pointer to an "empty" animation block
+(i.e.&nbsp;&nbsp; new Animation_block(...) ).&nbsp; It should be inserted
+into the symbol table using the given name:<br>
+
+
+
+
+
+
+
+
+
+
+<br>
+
+
+
+
+
+
+
+
+
+
+<pre style="margin-left: 40px;">forward animation bounce(rectangle cur_rectangle);</pre>
+
+
+
+
+
+
+
+
+
+
+<br>
+
+
+
+
+
+
+
+
+
+
+In the above example, the new animation block should be inserted into
+the symbol table using the name "bounce"<br>
+
+
+
+
+
+
+
+
+
+
+<br>
+
+
+
+
+
+
+
+
+
+
+The parameter in the above forward statement is a rectangle and has the
+name "cur_rectangle"&nbsp;&nbsp; A new rectangle (i.e. new Rectangle()
+) should be inserted into the symbol table using the name
+"cur_rectangle"<br>
+
+
+
+
+
+
+
+
+
+
+<br>
+
+
+
+
+
+
+
+
+
+
+You must also flag this new object as
+a parameter object by calling the following functions:<br>
+
+
+
+
+
+
+
+
+
+
+<br>
+
+
+
+
+
+
+
+
+
+
+<div style="margin-left: 40px;">new_object-&gt;never_animate();<br>
+
+
+
+
+
+
+
+
+
+
+new_object-&gt;never_draw();<br>
+
+
+
+
+
+
+
+
+
+
+</div>
+
+
+
+
+
+
+
+
+
+
+<br>
+
+
+
+
+
+
+
+
+
+
+In the last assignment you will parse animation blocks.&nbsp; At that
+point you will look up the animation block in the symbol table and
+insert statements into it.&nbsp; Consider this example:<br>
+
+
+
+
+
+
+
+
+
+
+<br>
+
+
+
+
+
+
+
+
+
+
+<pre style="margin-left: 40px;">animation bounce(rectangle cur_rectangle)<br>{<br>	// this example is from p8<br>	cur_rectangle.x = 42;  // lookup the "bounce" Animation_block in the symbol table, insert an assignment statement into this block<br>}<br></pre>
+
+
+
+
+
+
+
+
+
+
+<br>
+
+
+
+
+
+
+
+
+
+
+When the statements in the animation block are parsed, the cur_rectangle
+object will be used.&nbsp; That is why you put it in the symbol table
+when parsing the forward statement.<br>
+
+
+
+
+
+
+
+
+
+
+<br>
+
+
+
+
+
+
+
+
+
+
+<hr style="width: 100%; height: 2px;">Step 7: Update expressions and
+variables so
+that they can handle pointers to animation blocks (need this for #8).<br>
+
+
+
+
+
+
+
+
+
+
+<br>
+
+
+
+
+
+
+
+
+
+
+The grammar rule setting a parameter is:<br>
+
+
+
+
+
+
+
+
+
+
+<pre>    parameter:<br>	T_ID T_ASSIGN expression<br></pre>
+
+
+
+
+
+
+
+
+
+
+<br>
+
+
+
+
+
+
+
+
+In order to handle the animation_block parameter the Expression
+class must be able to handle a pointer to an Animation_block.&nbsp; Add
+routines to
+Expression so it can handle variables of type Animation_block.&nbsp;
+Parameter declarations is the only
+place in the language where an Expression contains an
+Animation_block.&nbsp; And an&nbsp;Expression of type Animation_block
+cannot be anything but a
+single Expression node (technically a "tree" but only has one
+node).&nbsp;
+This node is always a variable node.&nbsp; So all you have to do is add
+Expression::eval_animation_block(), make sure variable knows about type
+ANIMATION_BLOCK, and make sure your Expression constructor that takes a
+pointer to a Variable can handle ANIMATION_BLOCK type.<br>
+
+
+
+
+
+
+
+
+
+
+<hr style="width: 100%; height: 2px;">Step 8: Add code to your game
+object parameters (#4 above) so that you can
+initialize animation_blocks (they won't do anything yet, just show up
+in the symbol table) (see <a href="http://www.ecst.csuchico.edu/%7Etyson/classes/515.s16/src/p6/tests/t003.gpl">t003.gpl</a>,
+<a href="http://www.ecst.csuchico.edu/%7Etyson/classes/515.s16/src/p6/tests/t003.out">t003.out</a>,
+and <a href="http://www.ecst.csuchico.edu/%7Etyson/classes/515.s16/src/p6/tests/t003.jpg">t003.jpg</a>).<br>
+
+
+
+
+
+
+
+
+
+
+<br>
+
+
+
+
+
+
+
+
+If you do step 7 and augment Expression so it handles
+Animation_blocks,&nbsp;this step should be
+trivial.&nbsp; Add code to the parameter action that can deal with type
+ANIMATION_BLOCK.&nbsp; It will look just like the code that deals with
+INT, DOUBLE, and STRING.<br>
+
+
+
+
+
+
+
+
+
+
+<br>
+
+
+
+
+
+
+
+
+
+
+<hr style="width: 100%; height: 2px;">Step 9: Add member variables to
+class Variable and add code to gpl.y to parse member variables&nbsp;
+(see <a href="http://www.ecst.csuchico.edu/%7Etyson/classes/515.s16/src/p6/tests/t004.gpl">t004.gpl</a>,
+<a href="http://www.ecst.csuchico.edu/%7Etyson/classes/515.s16/src/p6/tests/t004.out">t004.out</a>,
+and <a href="http://www.ecst.csuchico.edu/%7Etyson/classes/515.s16/src/p6/tests/t004.jpg">t004.jpg</a>).&nbsp;
+You should not have to change Expression.<br>
+
+
+
+
+
+
+
+
+
+
+<br>
+
+
+
+
+
+
+
+
+
+
+For this step you need to add an action to the the variable productions:<br>
+
+
+
+
+
+
+
+
+
+
+<pre>    variable:	<br>	| T_ID T_PERIOD T_ID</pre>
+
+
+
+
+
+
+
+
+
+
+<br>
+
+
+
+
+
+
+
+
+
+
+This will require a Variable constructor (or you can use an existing
+constructor if you use default parameter values).<br>
+
+
+
+
+
+
+
+
+
+
+<br>
+
+
+
+
+
+
+
+
+
+
+The Variable get functions will also have to be modified to handle this
+type of variable.<br>
+<br>
+You will need to use Game_object::get_member_variable_type to set the Variable's type.<br>
+
+
+
+
+
+
+
+
+
+
+<br>
+
+
+
+
+
+
+
+
+
+
+<hr style="width: 100%; height: 2px;">Step 10: Add array member
+variables to class Variable and add code to gpl.y to parse array member
+variables (see <a href="http://www.ecst.csuchico.edu/%7Etyson/classes/515.s16/src/p6/tests/t005.gpl">t005.gpl</a>,
+<a href="http://www.ecst.csuchico.edu/%7Etyson/classes/515.s16/src/p6/tests/t005.out">t005.out</a>,
+and <a href="http://www.ecst.csuchico.edu/%7Etyson/classes/515.s16/src/p6/tests/t005.jpg">t005.jpg</a>).<br>
+
+
+
+
+
+
+
+
+
+
+<br>
+
+
+
+
+
+
+
+
+
+
+This step is similar to step 9.&nbsp; You will need to an an action for
+the production:<br>
+
+
+
+
+
+
+
+
+
+
+<pre>    variable:	<br>	T_ID T_LBRACKET expression T_RBRACKET T_PERIOD T_ID</pre>
+
+
+
+
+
+
+
+
+
+
+This step will also require a new constructor and for the Variable get
+functions to be modified.<br>
+
+
+
+
+
+
+
+<br>
+
+
+
+
+
+
+
+
+
+
+<br>
+
+
+
+
+
+
+
+
+
+
+<hr style="width: 100%; height: 2px;"><big><big><small><b><big><small>Turning in and Testing:</small></big></b></small></big></big><br>
+
+
+
+
+<br>
+
+
+
+
+<div style="margin-left: 40px;">See <a href="http://www.ecst.csuchico.edu/%7Etyson/classes/515.s16/docs/turnin.html">docs/turnin.html</a> for a description of how to turn in assignments.<br>
+
+
+
+<big><br style="font-weight: bold;">
+<span style="font-weight: bold;">Testing p6 is different than the previous phases:</span></big><br>
+<br>
+<div style="margin-left: 40px;">For tests that have graphics, your graphics output must match the posted output (e.g. <a href="http://www.ecst.csuchico.edu/%7Etyson/classes/515.s16/src/p6/tests/t006.jpg">tests/t006.jpg</a> and tests/t006.pixels). <br>
+See <a href="http://www.ecst.csuchico.edu/%7Etyson/classes/515.s16/docs/testing.html">docs/testing.html</a> for a description of how to test your program.<br>
+</div>
+
+
+
+
+
+
+
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</body></html>
